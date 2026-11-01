@@ -172,13 +172,13 @@ For web-only projects, [i18n-check](https://github.com/lingualdev/i18n-check) an
 
 ## Not yet
 
-- iOS `Localizable.strings` and String Catalogs (`.xcstrings`)
-- Flutter `.arb` files
-- Catalogs written as JavaScript or TypeScript modules
-- Store listings (fastlane metadata) and their length limits
-- A ready-made GitHub Action
+- iOS `Localizable.strings` and String Catalogs (`.xcstrings`) ([#1](https://github.com/aozkurt/locale-doctor/issues/1))
+- Flutter `.arb` files ([#2](https://github.com/aozkurt/locale-doctor/issues/2))
+- Catalogs written as JavaScript or TypeScript modules ([#3](https://github.com/aozkurt/locale-doctor/issues/3))
+- Store listings (fastlane metadata) and their length limits ([#4](https://github.com/aozkurt/locale-doctor/issues/4))
+- A ready-made GitHub Action ([#5](https://github.com/aozkurt/locale-doctor/issues/5))
 
-Ideas and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
+Ideas and pull requests are welcome. The issues marked [good first issue](https://github.com/aozkurt/locale-doctor/labels/good%20first%20issue) are small and point to the code to start from, and [CONTRIBUTING.md](CONTRIBUTING.md) explains the setup.
 
 ## License
 

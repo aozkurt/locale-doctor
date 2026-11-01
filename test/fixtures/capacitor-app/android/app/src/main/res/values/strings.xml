@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Sleep Diary</string>
+    <string name="title_activity_main">Sleep Diary</string>
+    <string name="package_name">com.example.sleepdiary</string>
+    <string name="custom_url_scheme">com.example.sleepdiary</string>
+    <string name="privacy_url">https://example.com/privacy</string>
+    <string name="background_note">The app is running in the background.</string>
+    <string name="widget_title">Last night</string>
+    <string name="widget_duration">%1$d h %2$d min</string>
+    <string name="widget_discount">Get %1$d%% off Plus</string>
+    <string name="reminder_body">Time to wind down, it\'s almost %1$s</string>
+    <string name="channel_name">Bedtime reminders</string>
+    <plurals name="widget_streak">
+        <item quantity="zero">No nights yet</item>
+        <item quantity="one">%d night in a row</item>
+        <item quantity="other">%d nights in a row</item>
+    </plurals>
+    <string-array name="weekdays">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
+</resources>

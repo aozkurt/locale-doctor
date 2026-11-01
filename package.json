@@ -1,0 +1,58 @@
+{
+  "name": "locale-doctor",
+  "version": "0.1.0",
+  "description": "A zero-config checkup for the translations of mobile and hybrid apps: web JSON catalogs and Android string resources, side by side.",
+  "keywords": [
+    "i18n",
+    "l10n",
+    "localization",
+    "translation",
+    "lint",
+    "cli",
+    "android",
+    "strings.xml",
+    "capacitor",
+    "ionic",
+    "react-native",
+    "i18next",
+    "icu",
+    "plurals"
+  ],
+  "homepage": "https://github.com/aozkurt/locale-doctor#readme",
+  "bugs": "https://github.com/aozkurt/locale-doctor/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aozkurt/locale-doctor.git"
+  },
+  "license": "MIT",
+  "author": "Andaç Özkurt",
+  "type": "module",
+  "bin": {
+    "locale-doctor": "dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.5"
+  }
+}

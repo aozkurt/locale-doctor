@@ -1,0 +1,19 @@
+{
+  "app": {
+    "title": "Sleep Diary",
+    "tagline": "Track your nights, wake up better"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "reminder": "Daily reminder at {{time}}",
+    "export": "Export your sleep data"
+  },
+  "cart": {
+    "total": "Total: {{amount}}"
+  },
+  "nights_one": "{{count}} night",
+  "nights_other": "{{count}} nights",
+  "share": "Share with <1>{{name}}</1>",
+  "brand": "Sleep Diary Plus"
+}

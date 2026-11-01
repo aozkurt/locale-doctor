@@ -1,0 +1,19 @@
+{
+  "app": {
+    "title": "Uyku Günlüğü",
+    "title": "Uyku Defteri",
+    "tagline": "Track your nights, wake up better"
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "reminder": "Her gün {{tme}} saatinde hatırlat",
+    "old": "Eski ayar"
+  },
+  "cart": {
+    "total": "Toplam"
+  },
+  "nights_one": "{{count}} gece",
+  "nights_other": "{{count}} gece",
+  "share": "<1>{{name}}</1> ile paylaş",
+  "brand": "Sleep Diary Plus"
+}

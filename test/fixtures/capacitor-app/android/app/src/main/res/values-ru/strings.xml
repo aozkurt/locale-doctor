@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="widget_title">Прошлая ночь</string>
+    <string name="widget_duration">%1$d ч %2$s мин</string>
+    <string name="widget_discount">Скидка %1$d%% на Plus</string>
+    <string name="reminder_body">Пора расслабиться, уже почти %1$s</string>
+    <string name="channel_name">Напоминания о сне</string>
+    <plurals name="widget_streak">
+        <item quantity="one">Одна ночь подряд</item>
+        <item quantity="other">%d ночи подряд</item>
+    </plurals>
+    <string-array name="weekdays">
+        <item>Пн</item>
+        <item>Вт</item>
+        <item>Ср</item>
+        <item>Чт</item>
+        <item>Пт</item>
+        <item>Сб</item>
+        <item>Вс</item>
+    </string-array>
+</resources>

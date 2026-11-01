@@ -1,0 +1,18 @@
+{
+  "app": {
+    "title": "Дневник сна",
+    "tagline": "Следите за своими ночами"
+  },
+  "settings": {
+    "title": "Настройки",
+    "language": "Язык",
+    "reminder": "Daily reminder at {{time}}"
+  },
+  "cart": {
+    "total": "Итого: {{amount}}"
+  },
+  "nights_one": "одна ночь",
+  "nights_other": "{{count}} ночей",
+  "share": "Поделиться с <1>{{name}}</1>",
+  "brand": "Sleep Diary Plus"
+}

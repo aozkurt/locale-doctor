@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="widget_title">昨夜</string>
+    <string name="widget_duration">%1$d 時間 %2$d 分</string>
+    <string name="widget_discount">Plus が %1$d%% オフ</string>
+    <string name="reminder_body">そろそろ休む時間です。もうすぐ %1$s です</string>
+    <string name="channel_name">就寝の "リマインダー"</string>
+    <plurals name="widget_streak">
+        <item quantity="one">%d 夜連続</item>
+        <item quantity="other">%d 夜連続</item>
+    </plurals>
+    <string-array name="weekdays">
+        <item>月</item>
+        <item>火</item>
+        <item>水</item>
+        <item>木</item>
+        <item>金</item>
+        <item>土</item>
+    </string-array>
+</resources>

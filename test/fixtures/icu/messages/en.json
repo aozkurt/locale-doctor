@@ -1,0 +1,5 @@
+{
+  "inbox": "{count, plural, one {# new message} other {# new messages}}",
+  "welcome": "Hello <b>{name}</b>!",
+  "rank": "You finished {place, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}"
+}

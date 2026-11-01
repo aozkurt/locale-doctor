@@ -1,0 +1,18 @@
+{
+  "app": {
+    "title": "睡眠日記",
+    "tagline": "Track your nights better"
+  },
+  "settings": {
+    "title": "設定",
+    "language": "言語",
+    "reminder": "毎日 {{time}} にお知らせ"
+  },
+  "cart": {
+    "total": "合計: {{amount}}"
+  },
+  "nights_one": "{{count}} 泊",
+  "nights_other": "{{count}} 泊",
+  "share": "<1>{{name}}</1> と共有",
+  "brand": "Sleep Diary Plus"
+}

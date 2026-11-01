@@ -1,0 +1,5 @@
+{
+  "inbox": "{count, plural, one {# новое сообщение} other {# новых сообщений}}",
+  "welcome": "Привет, {name}!",
+  "rank": "Вы заняли {place, selectordinal, other {#-е}} место"
+}

@@ -1,0 +1,18 @@
+{
+  "app": {
+    "title": "Schlaftagebuch",
+    "tagline": "Verfolge deine Nächte und wache besser auf"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "language": "Sprache",
+    "reminder": "Tägliche Erinnerung um {{time}}"
+  },
+  "cart": {
+    "total": "Summe: {{amount}}"
+  },
+  "nights_one": "{{count}} Nacht",
+  "nights_other": "{{count}} Nächte",
+  "share": "Mit <1>{{name}}</1> teilen",
+  "brand": "Sleep Diary Plus"
+}

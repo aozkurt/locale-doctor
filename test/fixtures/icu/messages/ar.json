@@ -1,0 +1,5 @@
+{
+  "inbox": "{count, plural, one {رسالة جديدة} other {# رسائل جديدة}}",
+  "welcome": "مرحبا <b>{nmae}</b>!",
+  "rank": "{place, selectordinal, other {المركز #}"
+}

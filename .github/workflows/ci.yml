@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test on Node ${{ matrix.node }} (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node: [22, 24]
+        include:
+          - os: windows-latest
+            node: 24
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - name: Run the built command
+        run: node dist/cli.js test/fixtures/clean
+
+  node-20:
+    # The tests need Node 22, but the command itself supports Node 20.
+    name: Run on Node 20
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check the fixtures with the built command
+        run: |
+          node --version
+          node dist/cli.js test/fixtures/clean
+          status=0
+          node dist/cli.js test/fixtures/capacitor-app --format json > report.json || status=$?
+          test "$status" -eq 1
+          node -e "const { summary } = require('./report.json'); if (summary.errors !== 9) { console.error(summary); process.exit(1); }"

@@ -60,7 +60,8 @@ describe("localeKey", () => {
 describe("pluralCategories", () => {
   it("lists the categories with the numbers that pick them", () => {
     const russian = pluralCategories("ru");
-    expect(russian.map((info) => info.category).sort()).toEqual(["few", "many", "one", "other"]);
+    expect(russian.map((info) => info.category)).toEqual(["one", "few", "many", "other"]);
+    expect(pluralCategories("ar").map((info) => info.category)).toEqual(["zero", "one", "two", "few", "many", "other"]);
     expect(russian.find((info) => info.category === "one")!.examples.slice(0, 4)).toEqual([1, 21, 31, 41]);
     expect(pluralCategories("ja").map((info) => info.category)).toEqual(["other"]);
   });

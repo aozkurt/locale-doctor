@@ -110,14 +110,18 @@ export interface PluralCategoryInfo {
 
 const categoryCache = new Map<string, PluralCategoryInfo[]>();
 
-/** The plural categories a language uses, with the whole numbers that pick each one. */
+// Node 22 lists a language's categories alphabetically and Node 24 in this order; messages use this one.
+const CATEGORY_ORDER: PluralCategory[] = ["zero", "one", "two", "few", "many", "other"];
+
+/** The plural categories a language uses, in the order zero, one, two, few, many, other, with the whole numbers that pick each one. */
 export function pluralCategories(locale: string, ordinal = false): PluralCategoryInfo[] {
   const id = `${locale}|${ordinal}`;
   const cached = categoryCache.get(id);
   if (cached) return cached;
   const rules = rulesFor(locale, ordinal);
+  const used = new Set(rules.resolvedOptions().pluralCategories as PluralCategory[]);
   const examples = new Map<PluralCategory, number[]>();
-  for (const category of rules.resolvedOptions().pluralCategories as PluralCategory[]) examples.set(category, []);
+  for (const category of CATEGORY_ORDER) if (used.has(category)) examples.set(category, []);
   for (const n of SAMPLES) examples.get(rules.select(n) as PluralCategory)?.push(n);
   const result = [...examples].map(([category, numbers]) => ({ category, examples: numbers }));
   categoryCache.set(id, result);

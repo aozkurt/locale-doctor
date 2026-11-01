@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="914" viewBox="0 0 860 914" role="img" aria-labelledby="title">
+  <title id="title">locale-doctor on a Capacitor app: missing keys, broken placeholders, missing plural forms and Android escaping bugs</title>
+  <style>
+    text { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; font-size: 14px; fill: #e6edf3; white-space: pre; }
+    .b { font-weight: 700; } .d { fill: #8b949e; } .r { fill: #ff7b72; } .g { fill: #3fb950; } .y { fill: #e3b341; } .c { fill: #79c0ff; }
+  </style>
+  <rect width="860" height="914" rx="10" fill="#0d1117"/>
+  <rect x="0.5" y="0.5" width="859" height="913" rx="10" fill="none" stroke="#30363d"/>
+  <circle cx="22" cy="20" r="6" fill="#ff5f57"/>
+  <circle cx="42" cy="20" r="6" fill="#febc2e"/>
+  <circle cx="62" cy="20" r="6" fill="#28c840"/>
+  <text x="24" y="56"><tspan class="d">$</tspan> npx locale-doctor</text>
+  <text x="24" y="77"></text>
+  <text x="24" y="98"><tspan class="b">locale-doctor</tspan> <tspan class="d">0.1.0</tspan></text>
+  <text x="24" y="119"></text>
+  <text x="24" y="140"><tspan class="c">•</tspan> <tspan class="b">JSON catalogs</tspan>  src/locales  <tspan class="d">i18next format · en → 4 locales · 10 keys</tspan></text>
+  <text x="24" y="161"></text>
+  <text x="24" y="182">  <tspan class="r">✖</tspan> <tspan class="b">tr</tspan>  <tspan class="d">4 errors, 2 warnings</tspan></text>
+  <text x="24" y="203">    <tspan class="r">✖</tspan> <tspan class="b">settings.language</tspan>  Missing (en: "Language")</text>
+  <text x="24" y="224">      <tspan class="d">src/locales/tr.json · missing-key</tspan></text>
+  <text x="24" y="245">    <tspan class="r">✖</tspan> <tspan class="b">settings.reminder</tspan>  Drops {{time}}; has {{tme}}, which en does not (en: "Daily reminder at</text>
+  <text x="24" y="266">        {{time}}")</text>
+  <text x="24" y="287">      <tspan class="d">src/locales/tr.json:9:5 · placeholder-mismatch</tspan></text>
+  <text x="24" y="308">    <tspan class="d">…</tspan></text>
+  <text x="24" y="329"></text>
+  <text x="24" y="350">  <tspan class="y">▲</tspan> <tspan class="b">ru</tspan>  <tspan class="d">3 warnings</tspan></text>
+  <text x="24" y="371">    <tspan class="y">▲</tspan> <tspan class="b">nights_*</tspan>  The one form has no number, but Russian uses it for 1, 21, 31, 41… — they would</text>
+  <text x="24" y="392">        all read "одна ночь"</text>
+  <text x="24" y="413">      <tspan class="d">src/locales/ru.json:14:3 · plural-implied-quantity</tspan></text>
+  <text x="24" y="434">    <tspan class="y">▲</tspan> <tspan class="b">nights_*</tspan>  Missing nights_few, nights_many — Russian uses one, few, many, other</text>
+  <text x="24" y="455">      <tspan class="d">src/locales/ru.json:15:3 · plural-forms</tspan></text>
+  <text x="24" y="476">    <tspan class="d">…</tspan></text>
+  <text x="24" y="497"></text>
+  <text x="24" y="518"><tspan class="c">•</tspan> <tspan class="b">Android strings</tspan>  android/app/src/main/res  <tspan class="d">values → 3 locales · 13 strings</tspan></text>
+  <text x="24" y="539"></text>
+  <text x="24" y="560">  <tspan class="r">✖</tspan> <tspan class="b">values-tr</tspan>  <tspan class="d">3 errors</tspan></text>
+  <text x="24" y="581">    <tspan class="r">✖</tspan> <tspan class="b">widget_title</tspan>  Missing (values: "Last night")</text>
+  <text x="24" y="602">      <tspan class="d">android/app/src/main/res/values-tr/strings.xml · missing-key</tspan></text>
+  <text x="24" y="623">    <tspan class="r">✖</tspan> <tspan class="b">widget_discount</tspan>  Has a % that is not part of a format specifier — String.format throws on</text>
+  <text x="24" y="644">        it or misreads it; write %% for a percent sign</text>
+  <text x="24" y="665">      <tspan class="d">android/app/src/main/res/values-tr/strings.xml:4:5 · placeholder-mismatch</tspan></text>
+  <text x="24" y="686">    <tspan class="r">✖</tspan> <tspan class="b">reminder_body</tspan>  Unescaped apostrophe — Android needs \' (or the whole text in double</text>
+  <text x="24" y="707">        quotes)</text>
+  <text x="24" y="728">      <tspan class="d">android/app/src/main/res/values-tr/strings.xml:5:5 · android-escaping</tspan></text>
+  <text x="24" y="749">    <tspan class="d">…</tspan></text>
+  <text x="24" y="770"></text>
+  <text x="24" y="791"><tspan class="b">Across layers</tspan></text>
+  <text x="24" y="812">  <tspan class="y">▲</tspan> <tspan class="b">android/app/src/main/res</tspan>  No values-de/ — other layers have de, so Android shows the values/</text>
+  <text x="24" y="833">      text there</text>
+  <text x="24" y="854"></text>
+  <text x="24" y="875"><tspan class="r">✖ 9 errors</tspan>  <tspan class="y">▲ 14 warnings</tspan>  <tspan class="c">● 3 notes</tspan>  <tspan class="d">(2 layers, 5 languages, 0.1s)</tspan></text>
+</svg>

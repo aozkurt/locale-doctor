@@ -35,4 +35,6 @@ node dist/cli.js test/fixtures/capacitor-app
 3. Plant the problem in a fixture and add it to the expected list in `test/check.test.ts`.
 4. Add a row to the rules table in the README.
 
+The README shows real output of `test/fixtures/capacitor-app`, and a test checks that it still matches. When the output changes, update the text between `<!-- demo:start -->` and `<!-- demo:end -->` and run `npm run demo` to redraw `docs/demo.svg`.
+
 A check should stay quiet on correct files: run it on a real project with many languages before opening the pull request, and say in the pull request which one.

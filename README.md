@@ -11,6 +11,14 @@ npx locale-doctor
 
 No config, no dependencies. It finds the translation files on its own, checks every language against the source language, and checks the layers against each other.
 
+![locale-doctor on a Capacitor app: missing keys, broken placeholders, missing plural forms and Android escaping bugs](docs/demo.svg)
+
+This is part of the output for [`test/fixtures/capacitor-app`](test/fixtures/capacitor-app), a small app with planted bugs. Run `npx locale-doctor test/fixtures/capacitor-app` in a clone to see all of it.
+
+<details>
+<summary>The same output as text</summary>
+
+<!-- demo:start -->
 ```
 locale-doctor 0.1.0
 
@@ -46,8 +54,9 @@ Across layers
 
 ✖ 9 errors  ▲ 14 warnings  ● 3 notes  (2 layers, 5 languages, 0.1s)
 ```
+<!-- demo:end -->
 
-This is the output for [`test/fixtures/capacitor-app`](test/fixtures/capacitor-app), a small app with planted bugs. Run `npx locale-doctor test/fixtures/capacitor-app` in a clone to see all of it.
+</details>
 
 ## Why
 

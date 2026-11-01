@@ -4,6 +4,7 @@ import { discover } from "./discover.js";
 import { listFiles } from "./files.js";
 import { loadAndroidLayer } from "./loaders/android.js";
 import { loadJsonLayer } from "./loaders/json.js";
+import { loadModuleLayer } from "./loaders/module.js";
 import type { CheckResult, Issue, Layer, LayerSummary, Severity } from "./model.js";
 import { checkCoverage } from "./rules/coverage.js";
 import { checkLayer } from "./rules/layer.js";
@@ -28,12 +29,12 @@ export async function check(options: CheckOptions = {}): Promise<CheckResult> {
   const groups = discover(await listFiles(root, config.ignore));
   const layers: Layer[] = [];
   for (const group of groups) {
-    if (group.kind !== "json") continue;
-    const layer = await loadJsonLayer(root, group, source);
+    if (group.kind === "android") continue;
+    const layer = group.kind === "json" ? await loadJsonLayer(root, group, source) : await loadModuleLayer(root, group, source);
     if (layer) layers.push(layer);
   }
   // Android's default values/ folder is in the source language of the rest of the app.
-  const androidSource = source ?? layers[0]?.source.locale ?? "en";
+  const androidSource = source ?? appSource(layers) ?? "en";
   for (const group of groups) {
     if (group.kind !== "android") continue;
     const layer = await loadAndroidLayer(root, group, androidSource);
@@ -54,6 +55,15 @@ export async function check(options: CheckOptions = {}): Promise<CheckResult> {
       infos: issues.filter((issue) => issue.severity === "info").length,
     },
   };
+}
+
+/**
+ * The language the layers translate from: the source of the most layers, then of the biggest. A
+ * folder of translations whose source text is in the code falls back to another language.
+ */
+function appSource(layers: Layer[]): string | undefined {
+  const sharing = (layer: Layer) => layers.filter((other) => other.source.locale === layer.source.locale).length;
+  return [...layers].sort((a, b) => sharing(b) - sharing(a) || b.source.messages.size - a.source.messages.size)[0]?.source.locale;
 }
 
 function summarize(layer: Layer): LayerSummary {

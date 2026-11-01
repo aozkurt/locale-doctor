@@ -13,5 +13,7 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src", "test"]
+  "include": ["src", "test"],
+  // The fixtures' modules are catalogs with planted mistakes, not code to compile.
+  "exclude": ["test/fixtures"]
 }

@@ -36,14 +36,15 @@ const SKIPPED_WHEN_WALKING = new Set([
 const GENERATED = [/(?:^|\/)src\/main\/assets\/public\//, /(?:^|\/)App\/App\/public\//];
 
 /**
- * The JSON and XML files under `root`, as forward-slash paths relative to it. Inside a git
- * repository this is what git tracks or would track (so .gitignore applies), else a folder walk.
+ * The JSON, XML, JavaScript and TypeScript files under `root`, as forward-slash paths relative to
+ * it. Inside a git repository this is what git tracks or would track (so .gitignore applies), else
+ * a folder walk.
  */
 export async function listFiles(root: string, ignore: string[] = []): Promise<string[]> {
   const files = (await gitFiles(root)) ?? (await walk(root));
   const ignored = ignore.map(globToRegExp);
   return files
-    .filter((file) => /\.(?:json|xml)$/i.test(file))
+    .filter((file) => /\.(?:json|xml|[cm]?[jt]s)$/i.test(file))
     .filter((file) => !file.split("/").some((part) => ALWAYS_SKIPPED.has(part)))
     .filter((file) => !GENERATED.some((pattern) => pattern.test(file)))
     .filter((file) => !ignored.some((pattern) => pattern.test(file)))

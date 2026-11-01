@@ -21,7 +21,7 @@ it("shows only lines that locale-doctor really prints", async () => {
     cwd: fileURLToPath(new URL("..", import.meta.url)),
     platform: "linux",
   });
-  const normalize = (line: string) => line.replace(/\d+\.\ds\)$/, "0.0s)");
+  const normalize = (line: string) => line.replace(/\r$/, "").replace(/\d+\.\ds\)$/, "0.0s)");
   const printed = new Set(stdout.split("\n").map(normalize));
   for (const line of shown) expect(printed, line).toContain(normalize(line));
 });

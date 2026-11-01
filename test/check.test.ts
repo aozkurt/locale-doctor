@@ -106,6 +106,22 @@ describe("ICU messages", async () => {
   });
 });
 
+describe("WebExtension message catalogs", async () => {
+  const result = await check({ root: fixture("webextension") });
+
+  it("matches keys and placeholders case-insensitively, ignores descriptions, and reports duplicates", () => {
+    expect(result.layers).toEqual([
+      expect.objectContaining({ kind: "json", path: "_locales", format: "webextension", source: "en", locales: ["de"] }),
+    ]);
+    expect(outline(result)).toEqual([
+      "error placeholder-mismatch de count",
+      "error duplicate-key en casekey",
+    ]);
+    expect(result.issues.find((issue) => issue.key === "greeting")).toBeUndefined();
+    expect(result.issues.find((issue) => issue.key === "casekey" && issue.rule === "extra-key")).toBeUndefined();
+  });
+});
+
 describe("catalogs written as TypeScript modules", async () => {
   const result = await check({ root: fixture("modules") });
 

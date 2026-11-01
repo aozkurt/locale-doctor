@@ -107,6 +107,8 @@ export interface Catalog {
    * a computed key ("" for the top). Keys at or under them are not reported as missing or extra.
    */
   unread?: Set<string>;
+  /** Hint set by loaders for catalog formats that use structured message objects. */
+  formatHint?: MessageFormat;
 }
 
 export type LayerKind = "json" | "module" | "android";
@@ -115,7 +117,7 @@ export type LayerKind = "json" | "module" | "android";
  * How placeholders are written: {{name}}, ICU {name, plural, ...}, plain {name}, a module's template
  * literals and plural() calls, or Android's %1$s.
  */
-export type MessageFormat = "i18next" | "icu" | "simple" | "module" | "android";
+export type MessageFormat = "i18next" | "icu" | "simple" | "module" | "android" | "webextension";
 
 /** One set of translation files that belong together: a JSON or module locales folder, or an Android res folder. */
 export interface Layer {

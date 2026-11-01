@@ -41,6 +41,8 @@ export async function loadJsonLayer(root: string, group: JsonGroup, preferredSou
         if (json.value.type !== "object") fail("Expected an object of translations at the top of the file", 1, 1);
         else {
           catalog.namespaces?.set(namespace, file);
+          const webExtension = path.posix.basename(file).toLowerCase() === "messages.json" && file.split("/").includes("_locales") && isWebExtensionCatalog(json.value);
+          if (webExtension) catalog.formatHint = "webextension";
           parsed.push({ catalog, file, namespace, json });
         }
       } catch (error) {
@@ -53,7 +55,9 @@ export async function loadJsonLayer(root: string, group: JsonGroup, preferredSou
   // With several namespace files per locale, keys carry their namespace the way i18next writes it: "common:save".
   const namespaces = new Set(parsed.map((file) => file.namespace));
   const prefixed = byFolder && namespaces.size > 1;
-  for (const file of parsed) flatten(file, prefixed ? `${file.namespace}:` : "", layerPath, issues);
+  for (const file of parsed) {
+    flatten(file, prefixed ? `${file.namespace}:` : "", layerPath, issues, file.catalog.formatHint === "webextension");
+  }
 
   const source = pickSource(catalogs, preferredSource);
   if (!source) return undefined;
@@ -82,7 +86,7 @@ export function pickSource(catalogs: Catalog[], preferred: string | undefined): 
   return [...catalogs].sort((a, b) => b.messages.size - a.messages.size)[0];
 }
 
-function flatten({ catalog, file, json }: ParsedFile, prefix: string, layerPath: string, issues: Issue[]) {
+function flatten({ catalog, file, json }: ParsedFile, prefix: string, layerPath: string, issues: Issue[], webExtension = false) {
   const at = (offset: number) => ({ file, ...json.position(offset) });
 
   const visit = (value: JsonValue, key: string, offset: number) => {
@@ -91,6 +95,33 @@ function flatten({ catalog, file, json }: ParsedFile, prefix: string, layerPath:
     const base = { key: prefix + key, loc, translatable: true, formatted: true };
     switch (value.type) {
       case "object": {
+        if (webExtension && key === "") {
+          const seen = new Map<string, number>();
+          for (const entry of value.entries) {
+            const normalizedKey = entry.key.toLocaleLowerCase("en-US");
+            const first = seen.get(normalizedKey);
+            if (first !== undefined) {
+              const position = at(entry.offset);
+              issues.push({
+                rule: "duplicate-key",
+                severity: "error",
+                layer: layerPath,
+                locale: catalog.label,
+                key: prefix + normalizedKey,
+                file,
+                line: position.line,
+                column: position.column,
+                message: `Defined twice (also on line ${at(first).line}) — only this last one is used`,
+              });
+            }
+            seen.set(normalizedKey, entry.offset);
+            const message = entry.value.type === "object" ? entry.value.entries.find((item) => item.key === "message")?.value : undefined;
+            if (message?.type === "string") {
+              set({ ...base, key: prefix + normalizedKey, loc: at(message.offset), kind: "text", text: message.value, raw: message.value });
+            }
+          }
+          break;
+        }
         const seen = new Map<string, number>();
         for (const entry of value.entries) {
           const child = key ? `${key}.${entry.key}` : entry.key;
@@ -129,6 +160,7 @@ function flatten({ catalog, file, json }: ParsedFile, prefix: string, layerPath:
 }
 
 export function detectFormat(source: Catalog): MessageFormat {
+  if (source.formatHint) return source.formatHint;
   let icu = 0;
   let i18next = 0;
   for (const [key, message] of source.messages) {
@@ -139,6 +171,14 @@ export function detectFormat(source: Catalog): MessageFormat {
   }
   if (icu > 0 && icu >= i18next) return "icu";
   return i18next > 0 ? "i18next" : "simple";
+}
+
+function isWebExtensionCatalog(value: JsonValue): boolean {
+  return value.type === "object" && value.entries.length > 0 && value.entries.every((entry) => {
+    if (entry.value.type !== "object") return false;
+    const message = entry.value.entries.find((item) => item.key === "message")?.value;
+    return message?.type === "string";
+  });
 }
 
 const PLURAL_SUFFIX = /^(.+?)_(ordinal_)?(zero|one|two|few|many|other)$/;

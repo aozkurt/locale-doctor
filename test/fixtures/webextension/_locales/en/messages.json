@@ -1,0 +1,7 @@
+{
+  "appName": {"message": "Sleep Diary", "description": "The name of the extension"},
+  "greeting": {"message": "Hello $USER$"},
+  "count": {"message": "You have $1 items"},
+  "CaseKey": {"message": "Upper"},
+  "casekey": {"message": "Lower"}
+}

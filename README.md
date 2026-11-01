@@ -100,6 +100,7 @@ Plural rules come from Node's built-in `Intl.PluralRules`, so every language wor
 
 - one file per locale: `src/locales/en.json`, `i18n/pt-BR.json`, `lang/zh_Hant.json`
 - one folder per locale: `public/locales/en/common.json`, `public/locales/de/common.json`
+- WebExtension catalogs: `_locales/en/messages.json`, `_locales/de/messages.json` (the `message` field is compared; descriptions are ignored)
 
 It works out the placeholder style of each folder: i18next (`{{name}}`, `key_one`/`key_other`, `$t(key)`, `<1>…</1>`), ICU MessageFormat (`{count, plural, …}`, `<b>…</b>`, as in react-intl, next-intl and FormatJS), or plain `{name}`, `%{name}` and `%s`. English is the source when there is one; otherwise the most complete locale. Nested keys become `settings.title`.
 

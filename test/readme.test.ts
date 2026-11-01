@@ -8,7 +8,7 @@ it("shows only lines that locale-doctor really prints", async () => {
   const readme = readFileSync(new URL("../README.md", import.meta.url), "utf8");
   const block = readme.slice(readme.indexOf("<!-- demo:start -->"), readme.indexOf("<!-- demo:end -->"));
   const shown = block
-    .split("\n")
+    .split(/\r?\n/)
     .slice(1)
     .filter((line) => line.trim() !== "" && line.trim() !== "…" && !line.startsWith("```"));
   expect(shown.length).toBeGreaterThan(20);

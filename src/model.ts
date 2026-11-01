@@ -92,12 +92,14 @@ export interface Catalog {
   /** Folder-per-locale layouts: namespace ("common") to file, and the namespaces whose file is broken. */
   namespaces?: Map<string, string>;
   brokenNamespaces?: Set<string>;
+  /** Hint set by loaders for catalog formats that use structured message objects. */
+  formatHint?: MessageFormat;
 }
 
 export type LayerKind = "json" | "android";
 
-/** How placeholders are written: {{name}}, ICU {name, plural, ...}, plain {name}, or Android's %1$s. */
-export type MessageFormat = "i18next" | "icu" | "simple" | "android";
+/** How placeholders are written: {{name}}, ICU {name, plural, ...}, WebExtension $NAME$, plain {name}, or Android's %1$s. */
+export type MessageFormat = "i18next" | "icu" | "simple" | "android" | "webextension";
 
 /** One set of translation files that belong together: a JSON locales folder, or an Android res folder. */
 export interface Layer {

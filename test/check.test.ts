@@ -106,6 +106,19 @@ describe("ICU messages", async () => {
   });
 });
 
+describe("WebExtension message catalogs", async () => {
+  const result = await check({ root: fixture("webextension") });
+
+  it("compares message values, ignores descriptions, and checks placeholders", () => {
+    expect(result.layers).toEqual([
+      expect.objectContaining({ kind: "json", path: "_locales", format: "webextension", source: "en", locales: ["de"] }),
+    ]);
+    expect(outline(result)).toEqual(["error placeholder-mismatch de count"]);
+    expect(result.issues[0]!.message).toContain("$2");
+    expect(result.issues[0]!.message).toContain("$1");
+  });
+});
+
 describe("options", () => {
   it("finds nothing wrong in a clean project", async () => {
     const result = await check({ root: fixture("clean") });

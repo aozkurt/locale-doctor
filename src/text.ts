@@ -24,6 +24,7 @@ export interface Analysis {
 const I18NEXT = /\{\{\s*-?\s*([^\s,}]+)[^}]*\}\}/g;
 const I18NEXT_NESTING = /\$t\(\s*([^,)\s]+)[^)]*\)/g;
 const SIMPLE = /\{\s*([\w$.-]+)\s*\}/g;
+const WEBEXT = /\$[A-Za-z_][\w-]*\$|\$\d+/g;
 const PRINTF = /%(?:\d+\$)?[-#+0,(]*\d*(?:\.\d+)?[a-zA-Z@]/g;
 const TAG = /<(\/?)([A-Za-z0-9][\w.:-]*)(?:\s[^<>]*)?\/?>/g;
 // java.util.Formatter, which Android's getString(id, args) uses. Without the space flag, so that
@@ -55,6 +56,12 @@ export function analyze(text: string, format: MessageFormat, formatted = true): 
     });
     rest = rest.replace(I18NEXT_NESTING, (_, key: string) => {
       tokens.push(placeholder(`$t(${key})`));
+      return " ";
+    });
+  }
+  if (format === "webextension") {
+    rest = rest.replace(WEBEXT, (placeholderText) => {
+      tokens.push(placeholder(placeholderText));
       return " ";
     });
   }

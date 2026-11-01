@@ -14,6 +14,13 @@ export interface JsonGroup {
   locales: Map<string, LocaleFiles>;
 }
 
+export interface ModuleGroup {
+  kind: "module";
+  /** The folder holding the modules: src/i18n/messages for src/i18n/messages/en.ts. */
+  dir: string;
+  locales: Map<string, LocaleFiles>;
+}
+
 export interface AndroidGroup {
   kind: "android";
   /** The res folder. */
@@ -22,18 +29,25 @@ export interface AndroidGroup {
   values: Map<string | null, LocaleFiles>;
 }
 
-export type Group = JsonGroup | AndroidGroup;
+export type Group = JsonGroup | ModuleGroup | AndroidGroup;
+
+/** JavaScript and TypeScript modules, in the order one is preferred when a locale has several: de.ts over a built de.js. */
+export const MODULE_EXTENSIONS = [".ts", ".mts", ".cts", ".js", ".mjs", ".cjs"];
+
+const KIND_ORDER = { json: 0, module: 1, android: 2 } as const;
 
 /** Finds the translation files among `files` (paths relative to the checked folder). */
 export function discover(files: string[]): Group[] {
   const flat = new Map<string, Map<string, LocaleFiles>>();
   const folders = new Map<string, Map<string, LocaleFiles>>();
+  const modules = new Map<string, Map<string, LocaleFiles>>();
   const android = new Map<string, Map<string | null, LocaleFiles>>();
 
   for (const file of files) {
     const parts = file.split("/");
     const name = parts[parts.length - 1]!;
     const parent = parts[parts.length - 2];
+    const extension = MODULE_EXTENSIONS.find((candidate) => name.toLowerCase().endsWith(candidate));
     if (/\.json$/i.test(name)) {
       const stem = name.slice(0, -5);
       const locale = toLocale(stem);
@@ -42,6 +56,10 @@ export function discover(files: string[]): Group[] {
         const folderLocale = toLocale(parent);
         if (folderLocale) add(folders, parts.slice(0, -2).join("/"), folderLocale, parent, file);
       }
+    } else if (extension) {
+      const stem = name.slice(0, -extension.length);
+      const locale = toLocale(stem);
+      if (locale) add(modules, parts.slice(0, -1).join("/"), locale, stem, file);
     } else if (/\.xml$/i.test(name) && parent?.startsWith("values") && parts[parts.length - 3] === "res") {
       const locale = androidLocale(parent);
       if (locale !== undefined) add(android, parts.slice(0, -2).join("/"), locale, parent, file);
@@ -51,6 +69,12 @@ export function discover(files: string[]): Group[] {
   const groups: Group[] = [];
   for (const [dir, locales] of flat) {
     if (locales.size >= 2) groups.push({ kind: "json", dir, layout: "files", locales });
+  }
+  for (const [dir, locales] of modules) {
+    // A folder with en.json and en.ts is read as JSON: the modules there are usually helpers around it.
+    if (locales.size < 2 || (flat.get(dir)?.size ?? 0) >= 2) continue;
+    for (const entry of locales.values()) entry.files = [preferredModule(entry.files)];
+    groups.push({ kind: "module", dir, locales });
   }
   for (const [dir, locales] of folders) {
     // Locale folders share file names (en/common.json, de/common.json); unrelated folders that
@@ -62,7 +86,12 @@ export function discover(files: string[]): Group[] {
   for (const [dir, values] of android) {
     if (values.has(null)) groups.push({ kind: "android", dir, values });
   }
-  return groups.sort((a, b) => (a.kind === b.kind ? a.dir.localeCompare(b.dir) : a.kind === "json" ? -1 : 1));
+  return groups.sort((a, b) => KIND_ORDER[a.kind] - KIND_ORDER[b.kind] || a.dir.localeCompare(b.dir));
+}
+
+function preferredModule(files: string[]): string {
+  const rank = (file: string) => MODULE_EXTENSIONS.findIndex((extension) => file.toLowerCase().endsWith(extension));
+  return [...files].sort((a, b) => rank(a) - rank(b))[0]!;
 }
 
 function add<K>(groups: Map<string, Map<K, LocaleFiles>>, dir: string, locale: K, label: string, file: string) {

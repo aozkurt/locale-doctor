@@ -21,8 +21,8 @@ node dist/cli.js test/fixtures/capacitor-app
 | --- | --- |
 | `src/files.ts` | Lists the files of the checked folder (git, or a folder walk) |
 | `src/discover.ts` | Picks out the translation files and groups them into layers |
-| `src/loaders/` | Reads JSON catalogs and Android resources into catalogs of messages |
-| `src/parsers/` | The JSON and XML parsers, which keep line numbers and duplicate keys |
+| `src/loaders/` | Reads JSON catalogs, JS/TS modules and Android resources into catalogs of messages |
+| `src/parsers/` | The JSON and XML parsers, which keep line numbers and duplicate keys, and the reader of a module's exported object (`module.ts`), which runs no code |
 | `src/text.ts`, `src/icu.ts` | Placeholders, tags and ICU messages |
 | `src/rules/` | The checks |
 | `src/report/` | The pretty, JSON and GitHub outputs |

@@ -22,9 +22,10 @@ A checkup for the translations of mobile and hybrid apps.
 Usage
   npx locale-doctor [folder] [options]
 
-Finds JSON translation catalogs (locales/en.json, locales/en/common.json) and
-Android string resources (res/values-*/strings.xml) in the folder, checks every
-language against the source language, and the layers against each other.
+Finds JSON translation catalogs (locales/en.json, locales/en/common.json), JS
+and TS catalog modules (i18n/en.ts) and Android string resources
+(res/values-*/strings.xml) in the folder, checks every language against the
+source language, and the layers against each other.
 
 Options
   -s, --source <locale>  The language the others are translated from
@@ -111,7 +112,8 @@ export async function main(argv: string[], io: Io): Promise<number> {
     return fail(
       `found no translation files in ${root}\n` +
         "It looks for JSON catalogs named after their language (locales/en.json, locales/de.json or\n" +
-        "locales/en/common.json) and Android resources (res/values/strings.xml, res/values-de/strings.xml).",
+        "locales/en/common.json), JS and TS modules named the same way (i18n/en.ts, i18n/de.ts) and\n" +
+        "Android resources (res/values/strings.xml, res/values-de/strings.xml).",
     );
   }
 

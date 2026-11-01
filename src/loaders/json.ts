@@ -71,7 +71,7 @@ export async function loadJsonLayer(root: string, group: JsonGroup, preferredSou
 }
 
 // A broken source stays the source: comparing against another language would report nonsense.
-function pickSource(catalogs: Catalog[], preferred: string | undefined): Catalog | undefined {
+export function pickSource(catalogs: Catalog[], preferred: string | undefined): Catalog | undefined {
   if (preferred) {
     const wanted = localeKey(preferred);
     const match = catalogs.find((c) => c.locale === preferred) ?? catalogs.find((c) => localeKey(c.locale) === wanted);
@@ -128,7 +128,7 @@ function flatten({ catalog, file, json }: ParsedFile, prefix: string, layerPath:
   visit(json.value, "", json.value.offset);
 }
 
-function detectFormat(source: Catalog): MessageFormat {
+export function detectFormat(source: Catalog): MessageFormat {
   let icu = 0;
   let i18next = 0;
   for (const [key, message] of source.messages) {
@@ -147,7 +147,7 @@ const PLURAL_SUFFIX = /^(.+?)_(ordinal_)?(zero|one|two|few|many|other)$/;
  * Turns i18next plural keys (nights_one, nights_other) into one plural message per catalog, so
  * each language can be checked against the plural forms it needs instead of English's.
  */
-function groupPlurals(catalogs: Catalog[], source: Catalog) {
+export function groupPlurals(catalogs: Catalog[], source: Catalog) {
   const bases = new Set<string>();
   for (const [key, message] of source.messages) {
     const match = PLURAL_SUFFIX.exec(key);

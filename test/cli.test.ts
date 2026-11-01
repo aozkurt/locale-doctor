@@ -50,6 +50,14 @@ describe("locale-doctor", () => {
     expect(stderr).toContain("found no translation files");
   });
 
+  it("names module layers and their format", async () => {
+    const { code, stdout } = await run(["modules-js"]);
+    expect(code).toBe(1);
+    expect(stdout).toContain("• JS/TS modules  locales  module format · en → 2 locales · 5 keys");
+    const report = JSON.parse((await run(["modules-i18next", "--format", "json"])).stdout);
+    expect(report.layers[0]).toMatchObject({ kind: "module", path: "src/i18n/locales", format: "i18next" });
+  });
+
   it("prints the result as JSON", async () => {
     const { stdout } = await run(["capacitor-app", "--format", "json"]);
     const report = JSON.parse(stdout);

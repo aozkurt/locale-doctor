@@ -24,6 +24,8 @@ export interface Analysis {
 const I18NEXT = /\{\{\s*-?\s*([^\s,}]+)[^}]*\}\}/g;
 const I18NEXT_NESTING = /\$t\(\s*([^,)\s]+)[^)]*\)/g;
 const SIMPLE = /\{\s*([\w$.-]+)\s*\}/g;
+// Modules write ${expr} as {expr}, and code without parameters keeps its dots and parentheses: {t("app.name")}.
+const MODULE = /\{\s*([^\s{}]+)\s*\}/g;
 const PRINTF = /%(?:\d+\$)?[-#+0,(]*\d*(?:\.\d+)?[a-zA-Z@]/g;
 const TAG = /<(\/?)([A-Za-z0-9][\w.:-]*)(?:\s[^<>]*)?\/?>/g;
 // java.util.Formatter, which Android's getString(id, args) uses. Without the space flag, so that
@@ -58,7 +60,7 @@ export function analyze(text: string, format: MessageFormat, formatted = true): 
       return " ";
     });
   }
-  rest = rest.replace(SIMPLE, (_, name: string) => {
+  rest = rest.replace(format === "module" ? MODULE : SIMPLE, (_, name: string) => {
     tokens.push(placeholder(`{${name}}`));
     return " ";
   });
@@ -130,6 +132,7 @@ const NOT_WORDS = [
   /\{\s*[\w$.-]+\s*,\s*(?:plural|selectordinal|select|number|date|time)\s*,?/g,
   /(?:=\d+|zero|one|two|few|many|other)\s*\{/g,
   /\{\s*[\w$.-]+\s*\}/g,
+  /\{[^\s{}]+\}/g,
   /%(?:\d+\$)?[-#+0,(]*\d*(?:\.\d+)?[a-zA-Z@%]/g,
   /<[^<>]*>/g,
   /\$t\([^)]*\)/g,

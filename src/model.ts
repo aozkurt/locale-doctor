@@ -3,6 +3,7 @@ export type Severity = "error" | "warning" | "info";
 /** Every check locale-doctor runs. A config file can turn each one off or change its severity. */
 export const RULES = [
   "parse-error",
+  "dynamic-value",
   "duplicate-key",
   "missing-file",
   "missing-key",
@@ -54,14 +55,23 @@ export interface TextMessage extends MessageBase {
   kind: "text";
   text: string;
   raw: string;
+  /** JS and TS modules: the parameters of a message that is a function. */
+  params?: string[];
+  /** JS and TS modules: the plural(n, { … }) calls in the message, each checked for the forms its language needs. */
+  plurals?: PluralMessage[];
 }
 
 export interface PluralMessage extends MessageBase {
   kind: "plural";
-  /** "android" for <plurals>, "i18next" for key_one / key_other groups. */
-  style: "android" | "i18next";
-  /** The key without the plural suffix: "nights" for nights_one and nights_other. */
+  /** "android" for <plurals>, "i18next" for key_one / key_other groups, "module" for plural(n, { one, other }) in a JS or TS module. */
+  style: "android" | "i18next" | "module";
+  /**
+   * The key without the plural suffix: "nights" for nights_one and nights_other. For a module plural,
+   * the call as messages name it ("plural(n, …)"), empty when it is the whole message.
+   */
   base: string;
+  /** Module plurals: the placeholder that # stands for, "{n}". */
+  count?: string;
   ordinal: boolean;
   forms: Map<PluralCategory, Form>;
 }
@@ -92,14 +102,22 @@ export interface Catalog {
   /** Folder-per-locale layouts: namespace ("common") to file, and the namespaces whose file is broken. */
   namespaces?: Map<string, string>;
   brokenNamespaces?: Set<string>;
+  /**
+   * JS and TS modules: keys whose value is code locale-doctor cannot read, and objects with a spread or
+   * a computed key ("" for the top). Keys at or under them are not reported as missing or extra.
+   */
+  unread?: Set<string>;
 }
 
-export type LayerKind = "json" | "android";
+export type LayerKind = "json" | "module" | "android";
 
-/** How placeholders are written: {{name}}, ICU {name, plural, ...}, plain {name}, or Android's %1$s. */
-export type MessageFormat = "i18next" | "icu" | "simple" | "android";
+/**
+ * How placeholders are written: {{name}}, ICU {name, plural, ...}, plain {name}, a module's template
+ * literals and plural() calls, or Android's %1$s.
+ */
+export type MessageFormat = "i18next" | "icu" | "simple" | "module" | "android";
 
-/** One set of translation files that belong together: a JSON locales folder, or an Android res folder. */
+/** One set of translation files that belong together: a JSON or module locales folder, or an Android res folder. */
 export interface Layer {
   kind: LayerKind;
   /** The folder, relative to the checked folder: "src/locales", "android/app/src/main/res". */

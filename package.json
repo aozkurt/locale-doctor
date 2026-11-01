@@ -1,7 +1,7 @@
 {
   "name": "locale-doctor",
   "version": "0.1.0",
-  "description": "A zero-config checkup for the translations of mobile and hybrid apps: web JSON catalogs and Android string resources, side by side.",
+  "description": "A zero-config checkup for the translations of mobile and hybrid apps: web catalogs (JSON, JS or TS modules) and Android string resources, side by side.",
   "keywords": [
     "i18n",
     "l10n",
@@ -15,6 +15,7 @@
     "ionic",
     "react-native",
     "i18next",
+    "typescript",
     "icu",
     "plurals"
   ],

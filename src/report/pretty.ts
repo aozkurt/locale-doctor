@@ -15,7 +15,7 @@ export interface PrettyOptions {
 
 const LIMIT = 25;
 
-const LAYER_NAMES = { json: "JSON catalogs", android: "Android strings" } as const;
+const LAYER_NAMES = { json: "JSON catalogs", module: "JS/TS modules", android: "Android strings" } as const;
 
 /** The report for people: one section per layer, issues grouped by locale. */
 export function formatPretty(result: CheckResult, options: PrettyOptions): string {
@@ -80,7 +80,7 @@ export function formatPretty(result: CheckResult, options: PrettyOptions): strin
 
 function heading(layer: LayerSummary, style: Style, symbols: Symbols): string {
   const details = [
-    layer.kind === "json" ? `${layer.format} format` : undefined,
+    layer.kind !== "android" ? `${layer.format} format` : undefined,
     `${layer.source} → ${plural(layer.locales.length, "locale")}`,
     plural(layer.keys, layer.kind === "android" ? "string" : "key"),
   ].filter(Boolean);
